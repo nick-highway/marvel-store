@@ -1,1 +1,1 @@
-# marvel-store
+Marvel Comics Store.
