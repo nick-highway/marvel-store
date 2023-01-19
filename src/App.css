@@ -28,11 +28,26 @@
 }
 
 @keyframes App-logo-animation {
-  0%   {left:-200px; top:-200px;}
-  25%  {left:200px; top:-200px;}
-  50%  {left:200px; top:200px;}
-  75%  {left:-200px; top:200px;}
-  100% {left:-200px; top:-200px;}
+  0% {
+    left: -200px;
+    top: -200px;
+  }
+  25% {
+    left: 200px;
+    top: -200px;
+  }
+  50% {
+    left: 200px;
+    top: 200px;
+  }
+  75% {
+    left: -200px;
+    top: 200px;
+  }
+  100% {
+    left: -200px;
+    top: -200px;
+  }
 }
 
 html,
@@ -63,10 +78,21 @@ body {
 
 .glow-on-hover:before {
   content: '';
-  background: linear-gradient(45deg, #ff0000, #ff7300, #fffb00, #48ff00, #00ffd5, #002bff, #7a00ff, #ff00c8, #ff0000);
+  background: linear-gradient(
+    45deg,
+    #ff0000,
+    #ff7300,
+    #fffb00,
+    #48ff00,
+    #00ffd5,
+    #002bff,
+    #7a00ff,
+    #ff00c8,
+    #ff0000
+  );
   position: absolute;
   top: -2px;
-  left:-2px;
+  left: -2px;
   background-size: 400%;
   z-index: -1;
   filter: blur(5px);
@@ -74,12 +100,12 @@ body {
   height: calc(100% + 4px);
   animation: glowing 20s linear infinite;
   opacity: 0;
-  transition: opacity .3s ease-in-out;
+  transition: opacity 0.3s ease-in-out;
   border-radius: 10px;
 }
 
 .glow-on-hover:active {
-  color: #000
+  color: #000;
 }
 
 .glow-on-hover:active:after {
@@ -103,7 +129,13 @@ body {
 }
 
 @keyframes glowing {
-  0% { background-position: 0 0; }
-  50% { background-position: 400% 0; }
-  100% { background-position: 0 0; }
+  0% {
+    background-position: 0 0;
+  }
+  50% {
+    background-position: 400% 0;
+  }
+  100% {
+    background-position: 0 0;
+  }
 }
