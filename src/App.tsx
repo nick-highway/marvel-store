@@ -1,7 +1,6 @@
-import logo from './logo/Marvel_Logo.svg.png';
-import * as React from 'react';
-import './App.css';
 import { Component } from 'react';
+import logo from './logo/Marvel_Logo.svg.png';
+import './App.css';
 
 type State = {
   gotStarted: boolean;
