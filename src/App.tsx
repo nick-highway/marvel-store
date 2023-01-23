@@ -1,46 +1,32 @@
-import { Component } from 'react';
 import logo from './logo/Marvel_Logo.svg.png';
+import * as React from 'react';
 import './App.css';
+import {useState} from 'react';
 
-type State = {
-  gotStarted: boolean;
-};
+function App() {
+  const [gotStarted, setGotStarted] = useState(false);
 
-class App extends Component<object, State> {
-  constructor(props: object) {
-    super(props);
-
-    this.state = {
-      gotStarted: false,
-    };
-    this.handleClick = this.handleClick.bind(this);
+  function handleClick() {
+    setGotStarted(!gotStarted);
   }
 
-  handleClick() {
-    this.setState((prevState: State) => ({
-      gotStarted: !prevState.gotStarted,
-    }));
-  }
-
-  render() {
-    return (
-      <div className='App'>
-        {!this.state.gotStarted && (
-          <button onClick={this.handleClick} className='glow-on-hover' type='button'>
-            START JOURNEY!
-          </button>
+  return (
+      <div className="App">
+        {!gotStarted && (
+            <button onClick={handleClick} className="glow-on-hover" type="button">
+              START JOURNEY!
+            </button>
         )}
-        {this.state.gotStarted && (
-          <header className='App-header'>
-            <div className='App-logo-header'>
-              <img src={logo} alt='logo' />
-              <p>Marvel Comics Store.</p>
-            </div>
-          </header>
+        {gotStarted && (
+            <header className="App-header">
+              <div className="App-logo-header">
+                <img src={logo} alt="logo" />
+                <p>Marvel Comics Store.</p>
+              </div>
+            </header>
         )}
       </div>
-    );
-  }
+  );
 }
 
 export default App;
