@@ -6,4 +6,3 @@ test('renders learn react link', () => {
   const linkElement = screen.getByText(/Marvel Comics Store/i);
   expect(linkElement).toBeInTheDocument();
 });
-4

@@ -15,7 +15,6 @@
     "isolatedModules": true,
     "noEmit": true,
     "jsx": "react-jsx",
-    "noImplicitAny": true,
-    "typeRoots": ["src/UI/@types", "node_modules/@types"]
+    "noImplicitAny": true
   }
 }
