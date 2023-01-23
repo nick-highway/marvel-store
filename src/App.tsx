@@ -1,4 +1,3 @@
-import logo from './logo/Marvel_Logo.svg.png';
 import * as React from 'react';
 import './App.css';
 import {useState} from 'react';
@@ -20,7 +19,6 @@ function App() {
         {gotStarted && (
             <header className="App-header">
               <div className="App-logo-header">
-                <img src={logo} alt="logo" />
                 <p>Marvel Comics Store.</p>
               </div>
             </header>
