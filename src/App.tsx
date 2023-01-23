@@ -24,16 +24,16 @@ class App extends Component<object, State> {
 
   render() {
     return (
-      <div className="App">
+      <div className='App'>
         {!this.state.gotStarted && (
-          <button onClick={this.handleClick} className="glow-on-hover" type="button">
+          <button onClick={this.handleClick} className='glow-on-hover' type='button'>
             START JOURNEY!
           </button>
         )}
         {this.state.gotStarted && (
-          <header className="App-header">
-            <div className="App-logo-header">
-              <img src={logo} alt="logo" />
+          <header className='App-header'>
+            <div className='App-logo-header'>
+              <img src={logo} alt='logo' />
               <p>Marvel Comics Store.</p>
             </div>
           </header>
