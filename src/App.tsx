@@ -1,30 +1,21 @@
 import * as React from 'react';
 import './App.css';
 import {useState} from 'react';
+import StartJourneyButton from './StartJourneyButton';
+import MarvelHeader from './MarvelHeader';
 
 function App() {
   const [gotStarted, setGotStarted] = useState(false);
 
-  function handleClick() {
-    setGotStarted(!gotStarted);
-  }
-
-  return (
-      <div className="App">
-        {!gotStarted && (
-            <button onClick={handleClick} className="glow-on-hover" type="button">
-              START JOURNEY!
-            </button>
-        )}
-        {gotStarted && (
-            <header className="App-header">
-              <div className="App-logo-header">
-                <p>Marvel Comics Store.</p>
-              </div>
-            </header>
-        )}
-      </div>
-  );
+  if (!gotStarted) {
+    return (<div className="App">
+          <StartJourneyButton gotStarted={gotStarted} setGotStarted={setGotStarted}/>
+        </div>)
+  } 
+      return (<div className="App">
+          <MarvelHeader/>
+      </div> )
+  
 }
 
 export default App;
