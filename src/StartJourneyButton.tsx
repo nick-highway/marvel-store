@@ -1,19 +1,21 @@
 import React from 'react';
 import './App.css';
 
-type Props = {
+interface Props {
     gotStarted: boolean,
     setGotStarted: Function
 };
 
-function StartJourneyButton(props: Props) {
+function StartJourneyButton({ gotStarted, setGotStarted }: Props) {
     function handleClick() {
-        props.setGotStarted(!props.gotStarted);
+        setGotStarted(!gotStarted);
     }
 
-    return (<button onClick={handleClick} className="glow-on-hover" type="button">
-        START JOURNEY!
-    </button>);
+    return (
+        <button onClick={handleClick} className="glow-on-hover" type="button">
+            START JOURNEY!
+        </button>
+    );
 }
 
 export default StartJourneyButton;

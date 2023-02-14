@@ -1,21 +1,19 @@
-import * as React from 'react';
+import React, {useState} from 'react';
 import './App.css';
-import {useState} from 'react';
 import StartJourneyButton from './StartJourneyButton';
 import MarvelHeader from './MarvelHeader';
 
 function App() {
   const [gotStarted, setGotStarted] = useState(false);
 
-  if (!gotStarted) {
-    return (<div className="App">
-          <StartJourneyButton gotStarted={gotStarted} setGotStarted={setGotStarted}/>
+  return (<div className="App">
+      {
+          gotStarted
+              ? <StartJourneyButton gotStarted={gotStarted} setGotStarted={setGotStarted}/>
+              : <MarvelHeader/>
+      }
         </div>)
-  } 
-      return (<div className="App">
-          <MarvelHeader/>
-      </div> )
-  
+
 }
 
 export default App;
