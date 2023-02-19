@@ -3,8 +3,8 @@ import './App.css';
 
 interface Props {
     gotStarted: boolean,
-    setGotStarted: Function
-};
+    setGotStarted: (val: boolean) => void
+}
 
 function StartJourneyButton({ gotStarted, setGotStarted }: Props) {
     function handleClick() {

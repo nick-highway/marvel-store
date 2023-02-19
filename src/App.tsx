@@ -9,8 +9,8 @@ function App() {
   return (<div className="App">
       {
           gotStarted
-              ? <StartJourneyButton gotStarted={gotStarted} setGotStarted={setGotStarted}/>
-              : <MarvelHeader/>
+              ? <MarvelHeader/>
+              : <StartJourneyButton gotStarted={gotStarted} setGotStarted={setGotStarted}/>
       }
         </div>)
 
