@@ -1,6 +1,6 @@
-import { useState, useEffect } from "react";
-import { API_PUBLIC_KEY, API_PRIVATE_KEY } from "../config"
-import md5 from "md5";
+import { useState, useEffect } from 'react';
+import md5 from 'md5';
+import { API_PUBLIC_KEY, API_PRIVATE_KEY } from '../config'
 
 interface Parameters {
     [key: string]: string;
@@ -8,7 +8,7 @@ interface Parameters {
 
 interface UseAPIProps<T> {
     url: string;
-    method: "GET" | "POST" | "PUT" | "DELETE";
+    method: 'GET' | 'POST' | 'PUT' | 'DELETE';
     parameters: Parameters
     body?: T;
 }
@@ -47,9 +47,9 @@ function useAPI<T extends {}>({
             const queryParams = buildQueryString(parameters, authParams);
             try {
                 const response = await fetch(`${url}?${queryParams}`, {
-                    method: method,
+                    method,
                     headers: {
-                        "Content-Type": "application/json",
+                        'Content-Type': 'application/json',
                     },
                     body: JSON.stringify(body),
                 });
@@ -71,7 +71,7 @@ function useAPI<T extends {}>({
         fetchData();
     }, [url, method, body, authConfig]);
 
-    return { response: response, isLoading: isLoading };
+    return { response, isLoading };
 }
 
 function buildQueryString(parameters: Parameters, authParams: string): string {

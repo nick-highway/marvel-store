@@ -1,12 +1,12 @@
-import {Avatar, ListItem, ListItemAvatar, ListItemText} from "@mui/material";
-import IComic from "../model/Comic";
-import React from "react";
+import {Avatar, ListItem, ListItemAvatar, ListItemText} from '@mui/material';
+import React from 'react';
+import IComic from '../model/Comic';
 
 interface ComicProps {
     comic: IComic
 }
 
-const Comic = ({ comic }: ComicProps) => {
+function Comic({ comic }: ComicProps) {
     const imageUrl = `${comic.thumbnail.path}.${comic.thumbnail.extension}`;
     return (
         <ListItem key={comic.title}>
@@ -15,9 +15,9 @@ const Comic = ({ comic }: ComicProps) => {
                         src={imageUrl}
                         variant="square" />
             </ListItemAvatar>
-            <ListItemText primary={comic.title} secondary={comic.description ? comic.description : "description"} />
+            <ListItemText primary={comic.title} secondary={comic.description ? comic.description : 'description'} />
         </ListItem>
     );
-};
+}
 
 export default Comic;

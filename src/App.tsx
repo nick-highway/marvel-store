@@ -1,6 +1,6 @@
 import React from 'react';
 import './App.css';
-import ComicsContainer from "./modules/ComicList/container/ComicsContainer";
+import ComicsContainer from './modules/ComicList/container/ComicsContainer';
 
 function App() {
 

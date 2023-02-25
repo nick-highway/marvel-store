@@ -1,17 +1,17 @@
-import IComic from "../model/Comic";
-import Comic from "../component/Comic"
-import React, { useState } from "react";
-import useAPI from "../../../hooks/UseApi";
-import { List } from "@mui/material";
+import React, { useState } from 'react';
+import { List } from '@mui/material';
+import IComic from '../model/Comic';
+import Comic from '../component/Comic'
+import useAPI from '../../../hooks/UseApi';
 
-const ComicsContainer = () => {
-    console.log("comics container started")
-    const [options, setOptions] = useState<{}>({orderBy: "title", limit: 20, offset: 0})
+function ComicsContainer() {
+    console.log('comics container started')
+    const [options, setOptions] = useState<{}>({orderBy: 'title', limit: 20, offset: 0})
     const [comics, setComics] = useState<IComic[]>([]);
     const { response, isLoading } = useAPI<{}>({
-        url: "https://gateway.marvel.com/v1/public/comics",
+        url: 'https://gateway.marvel.com/v1/public/comics',
         parameters: options,
-        method: "GET",
+        method: 'GET',
         body: {},
     });
 
@@ -35,6 +35,6 @@ const ComicsContainer = () => {
             </List>
         </div>
     );
-};
+}
 
 export default ComicsContainer;
