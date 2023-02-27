@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import md5 from 'md5';
-import { API_PUBLIC_KEY, API_PRIVATE_KEY } from '../config'
+import { API_PUBLIC_KEY, API_PRIVATE_KEY } from '../../../config'
 
 interface Parameters {
     [key: string]: string;
@@ -13,25 +13,44 @@ interface UseAPIProps<T> {
     body?: T;
 }
 
-interface ApiResponse {
-    data?: any;
-    error?: any;
-}
-
 interface AuthConfig {
     publicKey: string;
     privateKey: string;
 }
 
-function useAPI<T extends {}>({
+interface ApiError {
+    code?: string,
+    message: string
+}
+
+interface ApiResult<R> {
+    data?: R,
+    error?: ApiError,
+    isLoading: boolean
+}
+
+const BASE_URL = 'https://gateway.marvel.com';
+
+function buildQueryString(parameters: Parameters, authParams: string): string {
+    const params = [];
+
+    for (const [key, value] of Object.entries(parameters)) {
+        params.push(`${encodeURIComponent(key)}=${encodeURIComponent(value)}`);
+    }
+
+    return `${params.join('&')}&${authParams}`;
+}
+
+function useAPI<T, R extends object>({
                                   url,
                                   method,
                                   parameters,
                                   body,
-                              }: UseAPIProps<T>): { response: ApiResponse, isLoading: boolean } {
-    const [response, setResponse] = useState<ApiResponse>({});
+                              }: UseAPIProps<T>): ApiResult<R> {
+    const [data, setData] = useState<R>();
+    const [error, setError] = useState<ApiError>();
     const [isLoading, setIsLoading] = useState<boolean>(false);
-    const [authConfig, setAuthConfig] = useState<AuthConfig>({
+    const [authConfig] = useState<AuthConfig>({
         publicKey: API_PUBLIC_KEY,
         privateKey: API_PRIVATE_KEY,
     });
@@ -42,46 +61,35 @@ function useAPI<T extends {}>({
             const ts = Date.now().toString();
             const hash = md5(ts + authConfig.privateKey + authConfig.publicKey);
 
-
             const authParams = `apikey=${encodeURIComponent(authConfig.publicKey)}&ts=${encodeURIComponent(ts)}&hash=${encodeURIComponent(hash)}`;
             const queryParams = buildQueryString(parameters, authParams);
             try {
-                const response = await fetch(`${url}?${queryParams}`, {
+                const response = await fetch(`${BASE_URL}${url}?${queryParams}`, {
                     method,
                     headers: {
                         'Content-Type': 'application/json',
                     },
-                    body: JSON.stringify(body),
+                    body: body ? JSON.stringify(body) : null,
                 });
 
-                const json = response.json();
+                const json = await response.json();
 
                 if (response.ok) {
-                    setResponse({data: json});
+                    setData(json.data);
                 } else {
-                    setResponse({error: json});
+                    setError(json);
                 }
-            } catch (err : any) {
-                setResponse({ error: err.message })
+            } catch (err : unknown) {
+                setError(err as Error);
             } finally {
                 setIsLoading(false);
             }
         };
 
         fetchData();
-    }, [url, method, body, authConfig]);
+    }, [url, method, parameters, body, authConfig]);
 
-    return { response, isLoading };
-}
-
-function buildQueryString(parameters: Parameters, authParams: string): string {
-    const params = [];
-
-    for (const [key, value] of Object.entries(parameters)) {
-        params.push(`${encodeURIComponent(key)}=${encodeURIComponent(value)}`);
-    }
-
-    return `${params.join('&')}&${authParams}`;
+    return { data, error, isLoading };
 }
 
 export default useAPI;

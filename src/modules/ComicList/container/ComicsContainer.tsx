@@ -1,36 +1,49 @@
-import React, { useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import { List } from '@mui/material';
 import IComic from '../model/Comic';
 import Comic from '../component/Comic'
-import useAPI from '../../../hooks/UseApi';
+import useAPI from '../../common/hooks/UseApi';
+
+interface ComicPage {
+    offset: number,
+    limit: number,
+    total: number,
+    count: number,
+    results: IComic[]
+}
+
+interface RequestParameters {
+    [key: string]: string;
+}
 
 function ComicsContainer() {
-    console.log('comics container started')
-    const [options, setOptions] = useState<{}>({orderBy: 'title', limit: 20, offset: 0})
+    const [options, setOptions] = useState<RequestParameters>({orderBy: 'title', limit: '20', offset: '0'})
     const [comics, setComics] = useState<IComic[]>([]);
-    const { response, isLoading } = useAPI<{}>({
-        url: 'https://gateway.marvel.com/v1/public/comics',
+    const { data, error, isLoading } = useAPI<object, ComicPage>({
+        url: '/v1/public/comics',
         parameters: options,
-        method: 'GET',
-        body: {},
+        method: 'GET'
     });
+
+    useEffect(() => {
+        if (data) {
+            setComics(data.results ?? []);
+        }
+    }, [data]);
 
     if (isLoading) {
         return <div>Loading...</div>;
     }
 
-    if (response.error) {
-        return <div>Error: {response.error}</div>;
+    if (error) {
+        return <div>Error: {error.message}</div>;
     }
-
-    const newComics = response.data?.results ?? [];
-    setComics((prevComics) => [...prevComics, ...newComics]);
 
     return (
         <div>
             <List>
                 {comics.map((comic) => (
-                    <Comic comic={comic}/>
+                    <Comic key={comic.title} comic={comic}/>
                 ))}
             </List>
         </div>
