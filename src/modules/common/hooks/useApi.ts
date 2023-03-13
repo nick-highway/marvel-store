@@ -1,0 +1,85 @@
+import { useState, useEffect } from 'react';
+import md5 from 'md5';
+import { API_PUBLIC_KEY, API_PRIVATE_KEY } from '../../../config'
+
+interface Parameters {
+    [key: string]: string;
+}
+
+interface UseAPIProps<BodyType> {
+    url: string;
+    method: 'GET' | 'POST' | 'PUT' | 'DELETE';
+    parameters: Parameters
+    body?: BodyType;
+}
+
+interface ApiError {
+    code?: string,
+    message: string
+}
+
+interface ApiResult<ResultType> {
+    data?: ResultType,
+    error?: ApiError,
+    isLoading: boolean
+}
+
+const BASE_URL = 'https://gateway.marvel.com';
+const AUTH_CONFIG = {
+    publicKey: API_PUBLIC_KEY,
+    privateKey: API_PRIVATE_KEY,
+};
+
+function useApi<BodyType, ResultType extends object>({
+                                  url,
+                                  method,
+                                  parameters,
+                                  body,
+                              }: UseAPIProps<BodyType>): ApiResult<ResultType> {
+    const [data, setData] = useState<ResultType>();
+    const [error, setError] = useState<ApiError>();
+    const [isLoading, setIsLoading] = useState<boolean>(false);
+
+    useEffect(() => {
+        const fetchData = async () => {
+            setIsLoading(true);
+            const ts = Date.now().toString();
+            const hash = md5(ts + AUTH_CONFIG.privateKey + AUTH_CONFIG.publicKey);
+
+            try {
+                const urlParams = new URLSearchParams({
+                    ...parameters,
+                    apikey: AUTH_CONFIG.publicKey,
+                    ts,
+                    hash
+                }).toString()
+
+                const response = await fetch(`${BASE_URL}${url}?${urlParams}`, {
+                    method,
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: body ? JSON.stringify(body) : null,
+                });
+
+                const json = await response.json();
+
+                if (response.ok) {
+                    setData(json.data);
+                } else {
+                    setError(json);
+                }
+            } catch (err : unknown) {
+                setError(err as Error);
+            } finally {
+                setIsLoading(false);
+            }
+        };
+
+        fetchData();
+    }, [url, method, parameters, body]);
+
+    return { data, error, isLoading };
+}
+
+export default useApi;

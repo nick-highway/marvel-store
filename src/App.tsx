@@ -1,19 +1,12 @@
-import React, {useState} from 'react';
+import React from 'react';
 import './App.css';
-import StartJourneyButton from './StartJourneyButton';
-import MarvelHeader from './MarvelHeader';
+import ComicsContainer from './modules/ComicList/container/ComicsContainer';
 
 function App() {
-  const [gotStarted, setGotStarted] = useState(false);
 
   return (<div className="App">
-      {
-          gotStarted
-              ? <MarvelHeader/>
-              : <StartJourneyButton gotStarted={gotStarted} setGotStarted={setGotStarted}/>
-      }
+            <ComicsContainer/>
         </div>)
-
 }
 
 export default App;
