@@ -1,15 +1,15 @@
 import {Avatar, ListItem, ListItemAvatar, ListItemText} from '@mui/material';
 import React from 'react';
-import IComic from '../model/Comic';
+import Comic from '../types';
 
-interface ComicProps {
-    comic: IComic
+interface ComicItemProps {
+    comic: Comic
 }
 
-function Comic({ comic }: ComicProps) {
+function ComicItem({ comic }: ComicItemProps) {
     const imageUrl = `${comic.thumbnail.path}.${comic.thumbnail.extension}`;
     return (
-        <ListItem key={comic.title}>
+        <ListItem key={comic.id}>
             <ListItemAvatar>
                 <Avatar alt="Selected Image"
                         src={imageUrl}
@@ -20,4 +20,4 @@ function Comic({ comic }: ComicProps) {
     );
 }
 
-export default Comic;
+export default ComicItem;

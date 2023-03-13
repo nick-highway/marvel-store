@@ -1,25 +1,21 @@
 import React, {useEffect, useState} from 'react';
 import { List } from '@mui/material';
-import IComic from '../model/Comic';
-import Comic from '../component/Comic'
-import useAPI from '../../common/hooks/UseApi';
+import Comic from '../types';
+import ComicItem from '../component/ComicItem'
+import useApi from '../../common/hooks/useApi';
 
 interface ComicPage {
     offset: number,
     limit: number,
     total: number,
     count: number,
-    results: IComic[]
-}
-
-interface RequestParameters {
-    [key: string]: string;
+    results: Comic[]
 }
 
 function ComicsContainer() {
-    const [options, setOptions] = useState<RequestParameters>({orderBy: 'title', limit: '20', offset: '0'})
-    const [comics, setComics] = useState<IComic[]>([]);
-    const { data, error, isLoading } = useAPI<object, ComicPage>({
+    const [options, setOptions] = useState({orderBy: 'title', limit: '20', offset: '0'})
+    const [comics, setComics] = useState<Comic[]>([]);
+    const { data, error, isLoading } = useApi<object, ComicPage>({
         url: '/v1/public/comics',
         parameters: options,
         method: 'GET'
@@ -43,7 +39,7 @@ function ComicsContainer() {
         <div>
             <List>
                 {comics.map((comic) => (
-                    <Comic key={comic.title} comic={comic}/>
+                    <ComicItem comic={comic}/>
                 ))}
             </List>
         </div>

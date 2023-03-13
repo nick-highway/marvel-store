@@ -31,17 +31,7 @@ interface ApiResult<R> {
 
 const BASE_URL = 'https://gateway.marvel.com';
 
-function buildQueryString(parameters: Parameters, authParams: string): string {
-    const params = [];
-
-    for (const [key, value] of Object.entries(parameters)) {
-        params.push(`${encodeURIComponent(key)}=${encodeURIComponent(value)}`);
-    }
-
-    return `${params.join('&')}&${authParams}`;
-}
-
-function useAPI<T, R extends object>({
+function useApi<T, R extends object>({
                                   url,
                                   method,
                                   parameters,
@@ -50,10 +40,10 @@ function useAPI<T, R extends object>({
     const [data, setData] = useState<R>();
     const [error, setError] = useState<ApiError>();
     const [isLoading, setIsLoading] = useState<boolean>(false);
-    const [authConfig] = useState<AuthConfig>({
+    const authConfig: AuthConfig = {
         publicKey: API_PUBLIC_KEY,
         privateKey: API_PRIVATE_KEY,
-    });
+    };
 
     useEffect(() => {
         const fetchData = async () => {
@@ -61,10 +51,15 @@ function useAPI<T, R extends object>({
             const ts = Date.now().toString();
             const hash = md5(ts + authConfig.privateKey + authConfig.publicKey);
 
-            const authParams = `apikey=${encodeURIComponent(authConfig.publicKey)}&ts=${encodeURIComponent(ts)}&hash=${encodeURIComponent(hash)}`;
-            const queryParams = buildQueryString(parameters, authParams);
             try {
-                const response = await fetch(`${BASE_URL}${url}?${queryParams}`, {
+                const urlParams = new URLSearchParams({
+                    ...parameters,
+                    apikey: authConfig.publicKey,
+                    ts,
+                    hash
+                }).toString()
+
+                const response = await fetch(`${BASE_URL}${url}?${urlParams}`, {
                     method,
                     headers: {
                         'Content-Type': 'application/json',
@@ -92,4 +87,4 @@ function useAPI<T, R extends object>({
     return { data, error, isLoading };
 }
 
-export default useAPI;
+export default useApi;
