@@ -6,11 +6,11 @@ interface Parameters {
     [key: string]: string;
 }
 
-interface UseAPIProps<T> {
+interface UseAPIProps<BodyType> {
     url: string;
     method: 'GET' | 'POST' | 'PUT' | 'DELETE';
     parameters: Parameters
-    body?: T;
+    body?: BodyType;
 }
 
 interface AuthConfig {
@@ -23,21 +23,21 @@ interface ApiError {
     message: string
 }
 
-interface ApiResult<R> {
-    data?: R,
+interface ApiResult<ResultType> {
+    data?: ResultType,
     error?: ApiError,
     isLoading: boolean
 }
 
 const BASE_URL = 'https://gateway.marvel.com';
 
-function useApi<T, R extends object>({
+function useApi<BodyType, ResultType extends object>({
                                   url,
                                   method,
                                   parameters,
                                   body,
-                              }: UseAPIProps<T>): ApiResult<R> {
-    const [data, setData] = useState<R>();
+                              }: UseAPIProps<BodyType>): ApiResult<ResultType> {
+    const [data, setData] = useState<ResultType>();
     const [error, setError] = useState<ApiError>();
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const authConfig: AuthConfig = {
