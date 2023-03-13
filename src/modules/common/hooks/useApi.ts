@@ -13,11 +13,6 @@ interface UseAPIProps<BodyType> {
     body?: BodyType;
 }
 
-interface AuthConfig {
-    publicKey: string;
-    privateKey: string;
-}
-
 interface ApiError {
     code?: string,
     message: string
@@ -30,6 +25,10 @@ interface ApiResult<ResultType> {
 }
 
 const BASE_URL = 'https://gateway.marvel.com';
+const AUTH_CONFIG = {
+    publicKey: API_PUBLIC_KEY,
+    privateKey: API_PRIVATE_KEY,
+};
 
 function useApi<BodyType, ResultType extends object>({
                                   url,
@@ -40,21 +39,17 @@ function useApi<BodyType, ResultType extends object>({
     const [data, setData] = useState<ResultType>();
     const [error, setError] = useState<ApiError>();
     const [isLoading, setIsLoading] = useState<boolean>(false);
-    const authConfig: AuthConfig = {
-        publicKey: API_PUBLIC_KEY,
-        privateKey: API_PRIVATE_KEY,
-    };
 
     useEffect(() => {
         const fetchData = async () => {
             setIsLoading(true);
             const ts = Date.now().toString();
-            const hash = md5(ts + authConfig.privateKey + authConfig.publicKey);
+            const hash = md5(ts + AUTH_CONFIG.privateKey + AUTH_CONFIG.publicKey);
 
             try {
                 const urlParams = new URLSearchParams({
                     ...parameters,
-                    apikey: authConfig.publicKey,
+                    apikey: AUTH_CONFIG.publicKey,
                     ts,
                     hash
                 }).toString()
@@ -82,7 +77,7 @@ function useApi<BodyType, ResultType extends object>({
         };
 
         fetchData();
-    }, [url, method, parameters, body, authConfig]);
+    }, [url, method, parameters, body]);
 
     return { data, error, isLoading };
 }
