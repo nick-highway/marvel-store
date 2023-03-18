@@ -1,5 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {Grid} from '@mui/material';
+import {Container} from '@mui/joy';
 import Comic from '../types';
 import ComicItem from '../component/ComicItem'
 import useApi from '../../common/hooks/useApi';
@@ -36,11 +37,13 @@ function ComicsContainer() {
     }
 
     return (
-        <div>
-            <Grid container spacing={2}>
-                {comics.map((comic) => <ComicItem comic={comic}/>)}
-            </Grid>
-        </div>
+        <Container sx={{
+                'margin-top': 40
+            }}>
+                <Grid container spacing={2}>
+                    {comics.map((comic) => <ComicItem comic={comic}/>)}
+                </Grid>
+            </Container>
     );
 }
 
