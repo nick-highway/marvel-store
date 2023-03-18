@@ -24,12 +24,12 @@ function ComicItem({ comic }: ComicItemProps) {
         <Grid item key={comic.id} xs={12} sm={6} md={4}>
             <Card
                 variant="outlined"
-                sx={(theme) => ({
+                sx={{
                     '&:hover': {
-                        borderColor: theme.vars.palette.primary.outlinedHoverBorder,
-                        transform: 'translateY(-2px)',
+                        boxShadow: '3px 3px 8px rgba(0, 0, 0, 0.5)',
+                        transform: 'translateY(-2px) translateX(-2px)',
                     },
-                })}
+                }}
             >
                 <Box sx={{ display: 'flex', alignItems: 'center', pb: 1.5, gap: 1 }}>
                     <Typography fontWeight="lg">{shortenTitle}</Typography>
